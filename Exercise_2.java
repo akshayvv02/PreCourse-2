@@ -12,42 +12,34 @@ class QuickSort
        smaller (smaller than pivot) to left of 
        pivot and all greater elements to right 
        of pivot */
-     //creating one more function to take median for effectively choosing pivot  
-    int medianOfThree(int[] arr, int low, int high) {
-        int mid = low + (high - low) / 2;
-        int a = arr[low], b = arr[mid], c = arr[high];
-        // Find median of a, b, c
-        if ((a > b) != (a > c)) return low;
-        else if ((b > a) != (b > c)) return mid;
-        else return high;
-    }
-    
+
     void swap(int arr[],int i,int j){
         //Your code here
-        //swapping using third variable to be safe (rather than XOR)
-        int temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
+	// need to apply this logic otherwise it can lead to zero
+	if (i != j) {
+        arr[i] = arr[i] + arr[j];
+        arr[j] = arr[i] - arr[j];
+        arr[i] = arr[i] - arr[j];
+    }
     }
     
     int partition(int arr[], int low, int high) 
     { 
    	//Write code here for Partition and Swap 
-   	// Use median-of-three to choose a pivot
-    int pivot_idx = medianOfThree(arr, low, high);
-    // Move pivot to end
-    swap(arr, pivot_idx, high);  
-    int pivot = arr[high];
-    int i = low - 1;
-
-    for (int j = low; j < high; j++) {
-        if (arr[j] < pivot) {
-            i++;
-            swap(arr, i, j);
+    //Compare elements and swap.
+        int idx = low-1;
+        int pivot = arr[high];
+        for(int j = low;j<high;j++){
+            if(arr[j]<=pivot){
+                idx++;
+                //swapping the smaller number to left
+                swap(arr, j, idx);
+            }
         }
-    }
-    swap(arr, i + 1, high);
-    return i + 1;
+        idx++;
+        //swapping the pivot
+        swap(arr, high, idx);
+        return idx;
     } 
     /* The main function that implements QuickSort() 
       arr[] --> Array to be sorted, 
